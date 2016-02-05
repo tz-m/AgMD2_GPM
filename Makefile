@@ -4,7 +4,7 @@ CXXFLAGS=`root-config --cflags` -g
 LDFLAGS=`root-config --ldflags`
 ##LDFLAGS=`root-config --ldflags` -pg
 LDLIBS=`root-config --glibs` -lAgMD2
-SOURCES=runGPM.cpp AgMD2_GPM.cpp 
+SOURCES=src/runGPM.cpp src/AgMD2_GPM.cpp 
 OBJECTS=$(SOURCES:.cpp=.o)
 EXECUTABLE=runGPM
 
