@@ -1,10 +1,11 @@
 CXX=`root-config --cxx`
-CXXFLAGS=`root-config --cflags` -g
+CXXFLAGS=`root-config --cflags` -g -I./include
 ##CXXFLAGS=`root-config --cflags` -pg
 LDFLAGS=`root-config --ldflags`
 ##LDFLAGS=`root-config --ldflags` -pg
 LDLIBS=`root-config --glibs` -lAgMD2
-SOURCES=src/runGPM.cpp src/AgMD2_GPM.cpp 
+SRCDIR=./src/
+SOURCES=${SRCDIR}/runGPM.cpp ${SRCDIR}/AgMD2_GPM.cpp 
 OBJECTS=$(SOURCES:.cpp=.o)
 EXECUTABLE=runGPM
 

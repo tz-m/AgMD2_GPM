@@ -1,4 +1,4 @@
-#include "AgMD2_GPM.h"
+#include "../include/AgMD2_GPM.h"
 
 ///
 /// Based on Keysight IVI-C Driver Example Program
