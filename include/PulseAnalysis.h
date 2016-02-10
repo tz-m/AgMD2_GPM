@@ -14,7 +14,7 @@ class PulseAnalysis
     int basecount = 0;
     bool triggerFlag = false;
     int successFlag = 0;
-    for (size_t n = 0; n < pts; ++n)
+    for (size_t n = 0; n < (unsigned)pts; ++n)
       {
 	++basecount;
 	baseline = baseline1 + (data[n] - baseline1) / basecount;
@@ -47,7 +47,7 @@ class PulseAnalysis
 	      }
 	  }
       }
-    for (size_t n = 0; n < pts ; n++)
+    for (size_t n = 0; n < (unsigned)pts ; n++)
       {
 	if (data[n] > max)
 	  {
@@ -56,7 +56,7 @@ class PulseAnalysis
 	  }
       }
     double maxavg = 0;
-    for (size_t n = max_location-2; n <= max_location+2 ; n++)
+    for (size_t n = max_location-2; n <= (unsigned)max_location+2 ; n++)
       {
 	maxavg += data[n];
       }

@@ -69,7 +69,6 @@ void AgMD2_GPM::initialize_driver()
 
   
   ViChar str[128] = { '\0' };
-  ViBoolean simulatequery;
   // Read and output a few attributes.
   checkApiCall(AgMD2_GetAttributeViString(session, "", AGMD2_ATTR_SPECIFIC_DRIVER_PREFIX, sizeof(str), str), "AgMD2_GetAttributeViString(AGMD2_ATTR_SPECIFIC_DRIVER_PREFIX)");
   printf("Driver prefix:      %s\n", str);
@@ -163,7 +162,7 @@ void AgMD2_GPM::configure_triggers()
 	}
 
       bool activeTrigger = cp.GetActiveTrigger();
-      printf("Configuring trigger -- %s\n",cp.GetChannelName());
+      printf("Configuring trigger %i -- %s\n",num,cp.GetChannelName());
       printf("Source:          %s\n", cp.GetTriggerSource());
       printf("Level:           %g\n", cp.GetTriggerLevel());
       printf("Slope:           %i\n", cp.GetTriggerSlope());
@@ -518,6 +517,7 @@ int AgMD2_GPM::app()
 		      histMap[head.channelNumber]->SetBinContent(i,val);
 		    }
 		  if ((val >= 127 || val <= -127) && (int)head.channelNumber > 4)
+		  //if ((val >= 127) && (int)head.channelNumber > 4)
 		    //if (false)
 		    {
 		      saturation_flag = true;

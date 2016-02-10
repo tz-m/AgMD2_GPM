@@ -90,7 +90,7 @@ global   TriggerSigmaThreshold  5
 7	 ChannelPolarity	1
 7	 ChannelRange		0.5
 7	 ChannelOffset		0
-7	 TriggerLevel		-0.18
+7	 TriggerLevel		-0.21
 7	 TriggerSlope		1
 7	 ActiveTrigger		true
 
