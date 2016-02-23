@@ -211,7 +211,7 @@ void AgMD2_GPM::initialize_parameters()
   cpm.clear();
   
   std::string line;
-  std::ifstream defparams("params.txt");
+  std::ifstream defparams("/home/argonshef/AgMD2_GPM/params.txt");
   std::string partype; // put global, or channel number
   std::string parname;
   std::string parval;
