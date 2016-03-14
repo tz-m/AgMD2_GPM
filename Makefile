@@ -1,9 +1,9 @@
 CXX=`root-config --cxx`
-CXXFLAGS=`root-config --cflags` -g -I./include -L/usr/lib/CAEN -I/usr/include/CAEN -Wall 
+CXXFLAGS=`root-config --cflags` -g -I./include -Wall 
 ##CXXFLAGS=`root-config --cflags` -pg
 LDFLAGS=`root-config --ldflags`
 ##LDFLAGS=`root-config --ldflags` -pg
-LDLIBS=`root-config --glibs` -lAgMD2 -lCAENVME
+LDLIBS=`root-config --glibs` -lAgMD2
 SRCDIR=./src/
 SOURCES=$(SRCDIR)/runGPM.cpp $(SRCDIR)/AgMD2_GPM.cpp 
 OBJECTS=$(SOURCES:.cpp=.o)
