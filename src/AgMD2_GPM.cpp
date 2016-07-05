@@ -401,7 +401,7 @@ int AgMD2_GPM::app()
   if (rp.GetDraw())
     {
       canv = new TCanvas("c","DigiView",1400, 800);
-      canv->Divide(4,2);
+      canv->Divide(2,1);
 
       itr = cpm.begin();
       while (itr != cpm.end())
@@ -436,7 +436,7 @@ int AgMD2_GPM::app()
 	    {
 	      print = false;
 	    }
-
+	  
 	  if (sig_caught) break;
       
 	  head.eventNumber = i_record;
@@ -466,7 +466,7 @@ int AgMD2_GPM::app()
       
 	  if (print)
 	    {
-	  std::cout << ", Writing " << std::flush;
+	      std::cout << ", Writing " << std::flush;
 	    }
 	  
 	  saturation_flag = false;
@@ -507,9 +507,14 @@ int AgMD2_GPM::app()
 		  histMap[head.channelNumber]->GetYaxis()->SetRangeUser(-128,128);
 		  histMap[head.channelNumber]->SetBins(head.actualPoints-1,head.initialXOffset,head.initialXOffset+(head.xIncrement * head.actualPoints));
 		}
+	      //if (itr->second.GetChannelPolarity()*dataArray[head.firstValidPoint] > -90)
+	      //{
+	      //  saturation_flag = true;
+	      //}
 	      for (int i = 0; i < head.actualPoints; i++)
 		{
 		  int pol = itr->second.GetChannelPolarity();
+		  //int pol = 1;
 		  int val = pol*dataArray[i+head.firstValidPoint];
 	 
 		  if (rp.GetDraw())
@@ -517,7 +522,7 @@ int AgMD2_GPM::app()
 		      histMap[head.channelNumber]->SetBinContent(i,val);
 		    }
 		  if ((val >= 127 || val <= -127) && (int)head.channelNumber > 4)
-		  //if ((val >= 127) && (int)head.channelNumber > 4)
+		    //if ((val >= 127) && (int)head.channelNumber > 4)
 		    //if (false)
 		    {
 		      saturation_flag = true;
@@ -558,6 +563,7 @@ int AgMD2_GPM::app()
 		  std::cout << ", " << success << " Recorded" << std::flush;
 		}
 	      success++;
+	      
 	      if (rp.GetDraw())
 		{
 		  int canvnumber = 1;
@@ -572,12 +578,13 @@ int AgMD2_GPM::app()
 		    }
 		  canv->Modified();
 		  canv->Update();
-		}
+		}	    
 	    }
+	  
 	  /*
-	  if (i_record % 100 == 0)
+	    if (i_record % 100 == 0)
 	    {
-	      std::cout << "Event " << i_record << ", " << success << " recorded." << std::endl;
+	    std::cout << "Event " << i_record << ", " << success << " recorded." << std::endl;
 	    }
 	  */
 	  if (print)
