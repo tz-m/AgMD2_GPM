@@ -1,4 +1,4 @@
-global   Draw                   false
+global   Draw                   true
 
 global   ResourceName           PXI1::0::0::INSTR
 global   Simulate               false

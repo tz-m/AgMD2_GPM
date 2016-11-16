@@ -453,9 +453,9 @@ int AgMD2_GPM::app()
 	      std::cout << ", Waiting" << std::flush;
 	    }
 	  // this is cheating vvvvvvvvv
-	  //checkApiCall(AgMD2_SendSoftwareTrigger(session), "AgMD2_SendSoftwareTrigger");
+	  checkApiCall(AgMD2_SendSoftwareTrigger(session), "AgMD2_SendSoftwareTrigger");
   
-	  checkApiCall(AgMD2_WaitForAcquisitionComplete(session, rp.GetTimeoutInMS()), "AgMD2_WaitForAcquisitionComplete");
+	  //checkApiCall(AgMD2_WaitForAcquisitionComplete(session, rp.GetTimeoutInMS()), "AgMD2_WaitForAcquisitionComplete");
 
 	  if (print)
 	    {
@@ -521,9 +521,9 @@ int AgMD2_GPM::app()
 		    {
 		      histMap[head.channelNumber]->SetBinContent(i,val);
 		    }
-		  if ((val >= 127 || val <= -127) && (int)head.channelNumber > 4)
+		  //if ((val >= 127 || val <= -127) && (int)head.channelNumber > 4)
 		    //if ((val >= 127) && (int)head.channelNumber > 4)
-		    //if (false)
+		    if (false)
 		    {
 		      saturation_flag = true;
 		    }
