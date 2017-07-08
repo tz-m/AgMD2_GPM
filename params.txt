@@ -2,11 +2,11 @@ global   Draw                   true
 
 global   ResourceName           PXI1::0::0::INSTR
 global   Simulate               false
-global   NumRecords             10000
-global   RecordSize             400000 (change this to get the desired waveform length, RecordSize/1e9)
+global   NumRecords             200
+global   RecordSize             80000 (change this to get the desired waveform length, RecordSize/1e9) (GPM = 100000, PMT = 20000)
 global   SampleRate             1e9 (must stay 1 GS/s)
 global   TimeoutInMS            -1
-global   TriggerDelay           -0.7
+global   TriggerDelay           -0.5
 global   DoShaping              false
 global   EdgeDetectThreshold    10
 global   BaselineCalcFraction   0.3
@@ -61,44 +61,44 @@ global   TriggerSigmaThreshold  5
 4	 UseChannel		false
 4	 ChannelNickname	Anode2
 4	 ChannelPolarity	1
-4	 ChannelRange		0.5
-4	 ChannelOffset		-0.24
-4	 TriggerLevel		-1.
+4	 ChannelRange		1.0
+4	 ChannelOffset		-0.4
+4	 TriggerLevel		-0.1
 4	 TriggerSlope		1
 4	 ActiveTrigger		false
 
 5 	 UseChannel		false
-5	 ChannelNickname	ShapedA1
+5	 ChannelNickname	ShapedPMT
 5	 ChannelPolarity	1
-5	 ChannelRange		0.25
-5	 ChannelOffset		0
-5	 TriggerLevel		-0.09
+5	 ChannelRange		1.0
+5	 ChannelOffset		0.4
+5	 TriggerLevel		0.01
 5	 TriggerSlope		1
 5	 ActiveTrigger		false
 
 6	 UseChannel		false
-6	 ChannelNickname	ShapedT1
+6	 ChannelNickname	RawPMT
 6	 ChannelPolarity	1
-6	 ChannelRange		0.25
-6	 ChannelOffset		0
-6	 TriggerLevel		-0.09
-6	 TriggerSlope		1
-6	 ActiveTrigger		false
+6	 ChannelRange		0.5
+6	 ChannelOffset		-0.2
+6	 TriggerLevel		-0.013
+6	 TriggerSlope		0
+6	 ActiveTrigger		false (PMT=true)
 
 7	 UseChannel		true
 7	 ChannelNickname	ShapedA2
 7	 ChannelPolarity	1
-7	 ChannelRange		0.25
+7	 ChannelRange		1
 7	 ChannelOffset		0
-7	 TriggerLevel		-0.09
+7	 TriggerLevel		-0.39
 7	 TriggerSlope		1
-7	 ActiveTrigger		false
+7	 ActiveTrigger		true (GPM=true)
 
 8	 UseChannel		true
 8	 ChannelNickname	ShapedT2
 8	 ChannelPolarity	1
-8	 ChannelRange		0.25
+8	 ChannelRange		1
 8	 ChannelOffset		0
-8	 TriggerLevel		-0.1
+8	 TriggerLevel		-0.38
 8	 TriggerSlope		1
-8	 ActiveTrigger		true
+8	 ActiveTrigger		false

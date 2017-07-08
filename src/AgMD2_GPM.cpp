@@ -393,10 +393,22 @@ int AgMD2_GPM::app()
       std::cerr << "error: open file for output failed!" << std::endl;
       return -1;
     }
+
+  char filename2[30];
+  strftime(filename2,sizeof(filename2),"tdiff_%Y%m%d_%H%M%S.txt", &tstruct);
+
+  //std::ofstream filetdiff(filename2,std::ios::out|std::ios::app);
+  //if (!filetdiff.is_open())
+  //{
+  //std::cerr << "error: open file for output tdiff failed!" << std::endl;
+  //return -1;
+  //}
   
   TCanvas* canv;
   std::map<ViUInt8, TH1I*> histMap;
   std::map<ViUInt8, TGaxis*> axMap;
+
+  int clipmax = 0, clipmin = 0;
 
   if (rp.GetDraw())
     {
@@ -419,7 +431,8 @@ int AgMD2_GPM::app()
 	}
     }
   
-  bool saturation_flag = false;
+  bool saturation_flag_high = false;
+  bool saturation_flag_low = false;
   unsigned int success = 0;
 
   int i_record;
@@ -453,9 +466,14 @@ int AgMD2_GPM::app()
 	      std::cout << ", Waiting" << std::flush;
 	    }
 	  // this is cheating vvvvvvvvv
-	  checkApiCall(AgMD2_SendSoftwareTrigger(session), "AgMD2_SendSoftwareTrigger");
+	  //checkApiCall(AgMD2_SendSoftwareTrigger(session), "AgMD2_SendSoftwareTrigger");
   
-	  //checkApiCall(AgMD2_WaitForAcquisitionComplete(session, rp.GetTimeoutInMS()), "AgMD2_WaitForAcquisitionComplete");
+	  std::chrono::steady_clock::time_point begin = std::chrono::steady_clock::now();
+	  checkApiCall(AgMD2_WaitForAcquisitionComplete(session, rp.GetTimeoutInMS()), "AgMD2_WaitForAcquisitionComplete");
+	  std::chrono::steady_clock::time_point end = std::chrono::steady_clock::now();
+	  std::ofstream filetdiff(filename2,std::ios::out|std::ios::app);
+	  filetdiff << std::chrono::duration_cast<std::chrono::nanoseconds>(end-begin).count() << "\n";
+	  filetdiff.close();
 
 	  if (print)
 	    {
@@ -469,7 +487,8 @@ int AgMD2_GPM::app()
 	      std::cout << ", Writing " << std::flush;
 	    }
 	  
-	  saturation_flag = false;
+	  saturation_flag_high = false;
+	  saturation_flag_low = false;
 
 	  itr = cpm.begin();
 
@@ -507,10 +526,7 @@ int AgMD2_GPM::app()
 		  histMap[head.channelNumber]->GetYaxis()->SetRangeUser(-128,128);
 		  histMap[head.channelNumber]->SetBins(head.actualPoints-1,head.initialXOffset,head.initialXOffset+(head.xIncrement * head.actualPoints));
 		}
-	      //if (itr->second.GetChannelPolarity()*dataArray[head.firstValidPoint] > -90)
-	      //{
-	      //  saturation_flag = true;
-	      //}
+
 	      for (int i = 0; i < head.actualPoints; i++)
 		{
 		  int pol = itr->second.GetChannelPolarity();
@@ -521,15 +537,11 @@ int AgMD2_GPM::app()
 		    {
 		      histMap[head.channelNumber]->SetBinContent(i,val);
 		    }
-		  //if ((val >= 127 || val <= -127) && (int)head.channelNumber > 4)
-		    //if ((val >= 127) && (int)head.channelNumber > 4)
-		    if (false)
-		    {
-		      saturation_flag = true;
-		    }
+		  if (val >= 127) saturation_flag_high = true;
+		  if (val <= -127) saturation_flag_low = true;
 		}
-
-	      if (saturation_flag)
+	      
+	      if (saturation_flag_high || saturation_flag_low)
 		{
 		  delete[] dataArray;
 		  if (print)
@@ -553,15 +565,14 @@ int AgMD2_GPM::app()
 	    }
 	  if (print)
 	    {
-	      std::cout << ", Finished" << std::flush;
+	      std::cout << ", Finished, " << success << " Recorded" << std::flush;
 	    }
 
-	  if (!saturation_flag)
+	  if (saturation_flag_high) ++clipmax;
+	  if (saturation_flag_low) ++clipmin;
+
+	  if (!saturation_flag_high && !saturation_flag_low)
 	    {
-	      if (print)
-		{
-		  std::cout << ", " << success << " Recorded" << std::flush;
-		}
 	      success++;
 	      
 	      if (rp.GetDraw())
@@ -596,8 +607,19 @@ int AgMD2_GPM::app()
   catch (std::exception e) {}
 
   fileout.close();
+  //filetdiff.close();
+
+  time_t end = time(0);
+  //char endtime[30];
+  //struct tm tstructe;
+  //tstructe = *localtime(&end);
+  //strftime(endtime,sizeof(endtime),"%Y%m%d_%H%M%S", &tstructe);
+  std::cout << "Time = " << end-now << " seconds" << std::endl; 
   
   std::cout << "\n " << i_record << " events recorded." << std::endl;
+
+  std::cout << "\n " << clipmin << " events out of range LOW" << std::endl;
+  std::cout << "\n " << clipmax << " events out of range HIGH" << std::endl;
 
   Quit();
 

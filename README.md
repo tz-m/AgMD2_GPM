@@ -12,3 +12,8 @@ Keysight U5309A Digitizer control and DAQ
 
    --> "page_cache_release" should be changed to "put_page"
    --> "get_user_pages" should be changed to "get_user_pages_remote"
+
+
+If you get a message about PXI1::0::0::INSTR not existing, need to follow the installation instructions to re-install the MD2 driver.
+Not sure which step is the critical one, but I just re-ran all of the commands in
+{some location}/LinuxMD2-1.12.5/README
